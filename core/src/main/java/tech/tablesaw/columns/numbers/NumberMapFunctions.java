@@ -44,7 +44,7 @@ public interface NumberMapFunctions {
      * elements
      */
     default DoubleColumn asRatio() {
-      DoubleColumn pctColumn = DoubleColumn.create(name() + " percents", size());
+        DoubleColumn pctColumn = DoubleColumn.create(name() + " percents", size());
         double total = sum();
         for (int i = 0; i < size(); i++) {
             if (total != 0) {
@@ -71,6 +71,11 @@ public interface NumberMapFunctions {
         return pctColumn;
     }
 
+    /***
+     *相减
+     * @param column2
+     * @return
+     */
     default DoubleColumn subtract(NumericColumn<?> column2) {
         int col1Size = size();
         int col2Size = column2.size();
@@ -84,6 +89,12 @@ public interface NumberMapFunctions {
         return result;
     }
 
+    /**
+     * 相加
+     *
+     * @param column2
+     * @return
+     */
     default DoubleColumn add(NumericColumn<?> column2) {
         int col1Size = size();
         int col2Size = column2.size();
@@ -97,6 +108,12 @@ public interface NumberMapFunctions {
         return result;
     }
 
+    /**
+     * 相乘
+     *
+     * @param column2
+     * @return
+     */
     default DoubleColumn multiply(NumericColumn<?> column2) {
         int col1Size = size();
         int col2Size = column2.size();
@@ -110,6 +127,12 @@ public interface NumberMapFunctions {
         return result;
     }
 
+    /**
+     * 相除
+     *
+     * @param column2
+     * @return
+     */
     default DoubleColumn divide(NumericColumn<?> column2) {
         int col1Size = size();
         int col2Size = column2.size();
@@ -123,6 +146,11 @@ public interface NumberMapFunctions {
         return result;
     }
 
+    /**
+     * 相加
+     * @param value
+     * @return
+     */
     default DoubleColumn add(Number value) {
         double val = value.doubleValue();
         DoubleColumn result = DoubleColumn.create(name() + " + " + val, size());
@@ -199,15 +227,15 @@ public interface NumberMapFunctions {
             newColumn.set(i, Math.pow(getDouble(i), power));
         }
         return newColumn;
-    }    
+    }
 
     /**
      * Returns a NumberColumn with the square of each value in this column
      */
     default DoubleColumn square() {
-       DoubleColumn newColumn = power(2);
-       newColumn.setName(name() + "[sq]");
-       return newColumn;
+        DoubleColumn newColumn = power(2);
+        newColumn.setName(name() + "[sq]");
+        return newColumn;
     }
 
     default DoubleColumn sqrt() {
@@ -274,11 +302,11 @@ public interface NumberMapFunctions {
      * values don't return -Infinity
      */
     default DoubleColumn log1p() {
-      DoubleColumn newColumn = DoubleColumn.create(name() + "[1og1p]", size());
-      for (int i = 0; i < size(); i++) {
-          newColumn.set(i, Math.log1p(getDouble(i)));
-      }
-      return newColumn;
+        DoubleColumn newColumn = DoubleColumn.create(name() + "[1og1p]", size());
+        for (int i = 0; i < size(); i++) {
+            newColumn.set(i, Math.log1p(getDouble(i)));
+        }
+        return newColumn;
     }
 
     default DoubleColumn round() {
@@ -390,7 +418,7 @@ public interface NumberMapFunctions {
         EmpiricalDistribution distribution = new EmpiricalDistribution(binCount);
         distribution.load(asDoubleArray());
         int k = 0;
-        for(SummaryStatistics stats: distribution.getBinStats()) {
+        for (SummaryStatistics stats : distribution.getBinStats()) {
             histogram[k++] = stats.getN();
         }
         return DoubleColumn.create(name() + "[binned]", histogram);

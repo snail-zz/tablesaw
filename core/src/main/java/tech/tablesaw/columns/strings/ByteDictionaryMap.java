@@ -57,6 +57,11 @@ public class ByteDictionaryMap implements DictionaryMap {
         valueToKey.defaultReturnValue(DEFAULT_RETURN_VALUE);
     }
 
+    /**
+     * 将数据写入两个hashMap中。
+     * @param key
+     * @param value
+     */
     private void put(byte key, String value) {
         keyToValue.put(key, value);
         valueToKey.put(value, key);

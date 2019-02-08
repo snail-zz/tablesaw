@@ -58,6 +58,7 @@ public class DateColumn extends AbstractColumn<LocalDate> implements DateFilters
 
     private IntArrayList data;
 
+
     private final IntComparator comparator = (r1, r2) -> {
         final int f1 = getIntInternal(r1);
         int f2 = getIntInternal(r2);

@@ -38,6 +38,10 @@ public interface ColumnType {
     TextColumnType TEXT = TextColumnType.instance();
     SkipColumnType SKIP = SkipColumnType.instance();
 
+    /**
+     * 注册列类型
+     * @param type
+     */
     static void register(ColumnType type) {
         values.put(type.name(), type);
     }

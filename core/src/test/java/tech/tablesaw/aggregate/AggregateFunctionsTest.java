@@ -33,10 +33,11 @@ import static tech.tablesaw.aggregate.AggregateFunctions.*;
 public class AggregateFunctionsTest {
 
     private Table table;
+    private String path="D:\\workstudy\\javastudy\\tablesaw\\data";
 
     @Before
     public void setUp() throws Exception {
-        table = Table.read().csv(CsvReadOptions.builder("../data/bush.csv"));
+        table = Table.read().csv(CsvReadOptions.builder(path+"\\bush.csv"));
     }
 
     @Test

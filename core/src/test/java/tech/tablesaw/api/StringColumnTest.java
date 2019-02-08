@@ -20,10 +20,14 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static tech.tablesaw.columns.strings.StringPredicates.isEqualToIgnoringCase;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 
+import javafx.scene.control.Tab;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -61,6 +65,30 @@ TODO: fix
     public void testAppendObj2() {
         final StringColumn sc = StringColumn.create("sc", Arrays.asList("a", "b", "c", "a"));
         assertArrayEquals(sc.asList().toArray(), sc.asObjectArray());
+        String n = sc.get(0);
+        Assert.assertEquals("a", n);
+    }
+
+
+    @Test
+    public void autoInteger() {
+        AtomicInteger nextIndex = new AtomicInteger(-128);
+        for (int i = 0; i < 1000; i++) {
+            int s = nextIndex.incrementAndGet();
+            System.out.println(s);
+        }
+    }
+
+    @Test
+    public void moneColume() {
+        List<String> list = new ArrayList<>();
+        for (int i = 0; i < 50000; i++) {
+            list.add(Integer.toString(i));
+        }
+        StringColumn str = StringColumn.create("id", list);
+        Table table = Table.create("table", str);
+        String nm = str.get(9999);
+        Assert.assertEquals("9999", nm);
     }
 
     @Test
@@ -82,7 +110,7 @@ TODO: fix
         column.appendObj("Value 2");
         assertEquals(3, column.size());
     }
-    
+
     @Test
     public void testConditionalSet() {
         column.set(column.isEqualTo("Value 4"), "no Value");
@@ -205,7 +233,7 @@ TODO: fix
 
         StringColumn selection = stringColumn.where(
                 stringColumn.startsWith("A")
-                    .and(stringColumn.containsString("kan")));
+                        .and(stringColumn.containsString("kan")));
 
         assertEquals(1, selection.size());
         assertEquals("Arkansas", selection.getString(0));
@@ -373,7 +401,7 @@ TODO: fix
     public void testSubstring2() {
         String[] words = {"running", "icecube", "back"};
         StringColumn wordColumn = StringColumn.create("words", words);
-        StringColumn result = wordColumn.substring(1,3);
+        StringColumn result = wordColumn.substring(1, 3);
         assertEquals(result.get(0), "un");
         assertEquals(result.get(1), "ce");
         assertEquals(result.get(2), "ac");
@@ -383,7 +411,7 @@ TODO: fix
     public void testReplaceFirst() {
         String[] words = {"running", "run run run"};
         StringColumn wordColumn = StringColumn.create("words", words);
-        StringColumn result = wordColumn.replaceFirst("run","walk");
+        StringColumn result = wordColumn.replaceFirst("run", "walk");
         assertEquals(result.get(0), "walkning");
         assertEquals(result.get(1), "walk run run");
     }
@@ -392,7 +420,7 @@ TODO: fix
     public void testReplaceAll() {
         String[] words = {"running", "run run run"};
         StringColumn wordColumn = StringColumn.create("words", words);
-        StringColumn result = wordColumn.replaceAll("run","walk");
+        StringColumn result = wordColumn.replaceAll("run", "walk");
         assertEquals(result.get(0), "walkning");
         assertEquals(result.get(1), "walk walk walk");
     }
@@ -402,7 +430,7 @@ TODO: fix
         String[] words = {"running", "run run run"};
         String[] regex = {"n", "g"};
         StringColumn wordColumn = StringColumn.create("words", words);
-        StringColumn result = wordColumn.replaceAll(regex,"XX");
+        StringColumn result = wordColumn.replaceAll(regex, "XX");
         assertEquals(result.get(0), "ruXXXXiXXXX");
         assertEquals(result.get(1), "ruXX ruXX ruXX");
     }
@@ -507,7 +535,7 @@ TODO: fix
         String[] words = {"foo", "bar", "larry", "foo", "lion", "ben", "tiger", "bar"};
         StringColumn wordColumn = StringColumn.create("words", words);
         DoubleColumn result = wordColumn.asDoubleColumn();
-        assertArrayEquals(new double[] { 0.0, 1.0, 2.0, 0.0, 3.0, 4.0, 5.0, 1.0 }, result.asDoubleArray(), 0.000_000_1);
+        assertArrayEquals(new double[]{0.0, 1.0, 2.0, 0.0, 3.0, 4.0, 5.0, 1.0}, result.asDoubleArray(), 0.000_000_1);
     }
 
     @Test
@@ -515,14 +543,14 @@ TODO: fix
         String[] words = {"foo", "bar", "larry", "foo", "lion", null, "ben", "tiger", "bar"};
         StringColumn wordColumn = StringColumn.create("words", words);
         double[] result = wordColumn.asDoubleArray();
-        assertArrayEquals(new double[] { 0.0, 1.0, 2.0, 0.0, 3.0, 4.0, 5.0, 6.0, 1.0 }, result, 0.000_000_1);
+        assertArrayEquals(new double[]{0.0, 1.0, 2.0, 0.0, 3.0, 4.0, 5.0, 6.0, 1.0}, result, 0.000_000_1);
     }
 
     @Test
     public void getDouble() {
         String[] words = {"foo", "bar", "larry", "foo", "lion", null, "ben", "tiger", "bar"};
         StringColumn wordColumn = StringColumn.create("words", words);
-        double[] expected = new double[] { 0.0, 1.0, 2.0, 0.0, 3.0, 4.0, 5.0, 6.0, 1.0 };
+        double[] expected = new double[]{0.0, 1.0, 2.0, 0.0, 3.0, 4.0, 5.0, 6.0, 1.0};
         double[] result = new double[words.length];
         for (int i = 0; i < words.length; i++) {
             result[i] = wordColumn.getDouble(i);
